@@ -21,11 +21,11 @@ public class OrderShipmentUseCase {
     public void run(OrderShipmentRequest request) {
         final Order order = orderRepository.getById(request.getOrderId());
 
-        if (order.getStatus().equals(CREATED) || order.getStatus().equals(REJECTED)) {
+        if (order.isCreated() || order.isRejected()) {
             throw new OrderCannotBeShippedException();
         }
 
-        if (order.getStatus().equals(SHIPPED)) {
+        if (order.isShipped()) {
             throw new OrderCannotBeShippedTwiceException();
         }
 
