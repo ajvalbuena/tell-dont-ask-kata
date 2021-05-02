@@ -18,23 +18,19 @@ public class Order {
     private int id;
 
     public void ship(ShipmentService shipmentService) {
-        if (isCreated() || isRejected()) throw new OrderCannotBeShippedException();
-        if (isShipped()) throw new OrderCannotBeShippedTwiceException();
+        if (isStatus(CREATED) || isStatus(REJECTED)) throw new OrderCannotBeShippedException();
+        if (isStatus(SHIPPED)) throw new OrderCannotBeShippedTwiceException();
 
         shipmentService.ship(this);
         status = OrderStatus.SHIPPED;
     }
 
-    private boolean isCreated() {
-        return this.getStatus().equals(CREATED);
+    public boolean isApproved() {
+        return isStatus(APPROVED);
     }
 
-    private boolean isRejected() {
-        return this.getStatus().equals(REJECTED);
-    }
-
-    private boolean isShipped() {
-        return this.getStatus().equals(SHIPPED);
+    public boolean isStatus(OrderStatus status) {
+        return this.getStatus().equals(status);
     }
 
     public BigDecimal getTotal() {
