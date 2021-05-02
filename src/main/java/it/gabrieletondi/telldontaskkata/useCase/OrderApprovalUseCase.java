@@ -15,5 +15,4 @@ public class OrderApprovalUseCase {
         order.approve(request);
         orderRepository.save(order);
     }
-
 }
