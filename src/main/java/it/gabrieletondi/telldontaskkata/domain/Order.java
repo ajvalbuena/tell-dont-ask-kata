@@ -1,5 +1,9 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
+import it.gabrieletondi.telldontaskkata.service.ShipmentService;
+import it.gabrieletondi.telldontaskkata.useCase.OrderCannotBeShippedException;
+import it.gabrieletondi.telldontaskkata.useCase.OrderCannotBeShippedTwiceException;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,9 +17,25 @@ public class Order {
     private OrderStatus status;
     private int id;
 
-    public boolean isCreated(){ return this.getStatus().equals(CREATED); }
-    public boolean isRejected(){ return this.getStatus().equals(REJECTED); }
-    public boolean isShipped(){ return this.getStatus().equals(SHIPPED); }
+    public void ship(ShipmentService shipmentService) {
+        if (isCreated() || isRejected()) throw new OrderCannotBeShippedException();
+        if (isShipped()) throw new OrderCannotBeShippedTwiceException();
+
+        shipmentService.ship(this);
+        status = OrderStatus.SHIPPED;
+    }
+
+    private boolean isCreated() {
+        return this.getStatus().equals(CREATED);
+    }
+
+    private boolean isRejected() {
+        return this.getStatus().equals(REJECTED);
+    }
+
+    private boolean isShipped() {
+        return this.getStatus().equals(SHIPPED);
+    }
 
     public BigDecimal getTotal() {
         return total;
