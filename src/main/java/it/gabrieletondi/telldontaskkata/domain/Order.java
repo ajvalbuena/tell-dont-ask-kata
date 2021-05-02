@@ -18,7 +18,7 @@ public class Order {
     private int id;
 
 
-    public void newBlankOrder(){
+    public void newBlankOrder() {
         setStatus(OrderStatus.CREATED);
         setItems(new ArrayList<>());
         setCurrency("EUR");
@@ -44,6 +44,23 @@ public class Order {
 
     public boolean isStatus(OrderStatus status) {
         return this.getStatus().equals(status);
+    }
+
+    public void updateOrderWithOrderItems(){
+        updateTax();
+        updateTotal();
+    }
+
+    private void updateTotal() {
+        total = items.stream()
+                .map(item -> item.getTaxedAmount())
+                .reduce(total, (a, b) -> a.add(b));
+    }
+
+    private void updateTax() {
+        tax = items.stream()
+                .map(item -> item.getTax())
+                .reduce(tax, (a, b) -> a.add(b));
     }
 
     public BigDecimal getTotal() {

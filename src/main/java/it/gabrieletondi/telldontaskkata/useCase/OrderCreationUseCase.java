@@ -35,12 +35,9 @@ public class OrderCreationUseCase {
             else {
                 final OrderItem orderItem = new OrderItem(product, itemRequest.getQuantity());
                 order.getItems().add(orderItem);
-
-                order.setTotal(order.getTotal().add(orderItem.getTaxedAmount()));
-                order.setTax(order.getTax().add(orderItem.getTax()));
             }
         }
-
+        order.updateOrderWithOrderItems();
         orderRepository.save(order);
     }
 }
