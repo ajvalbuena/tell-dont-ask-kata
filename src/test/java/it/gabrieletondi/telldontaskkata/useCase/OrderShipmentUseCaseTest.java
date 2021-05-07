@@ -14,6 +14,7 @@ public class OrderShipmentUseCaseTest {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
     private final TestShipmentService shipmentService = new TestShipmentService();
     private final OrderShipmentUseCase useCase = new OrderShipmentUseCase(orderRepository, shipmentService);
+    OrderShipmentRequest request = new OrderShipmentRequest(1);
 
     @Test
     public void shipApprovedOrder() throws Exception {
@@ -21,9 +22,6 @@ public class OrderShipmentUseCaseTest {
         initialOrder.setId(1);
         initialOrder.setStatus(OrderStatus.APPROVED);
         orderRepository.addOrder(initialOrder);
-
-        OrderShipmentRequest request = new OrderShipmentRequest();
-        request.setOrderId(1);
 
         useCase.run(request);
 
@@ -38,9 +36,6 @@ public class OrderShipmentUseCaseTest {
         initialOrder.setStatus(OrderStatus.CREATED);
         orderRepository.addOrder(initialOrder);
 
-        OrderShipmentRequest request = new OrderShipmentRequest();
-        request.setOrderId(1);
-
         useCase.run(request);
 
         assertThat(orderRepository.getSavedOrder(), is(nullValue()));
@@ -54,9 +49,6 @@ public class OrderShipmentUseCaseTest {
         initialOrder.setStatus(OrderStatus.REJECTED);
         orderRepository.addOrder(initialOrder);
 
-        OrderShipmentRequest request = new OrderShipmentRequest();
-        request.setOrderId(1);
-
         useCase.run(request);
 
         assertThat(orderRepository.getSavedOrder(), is(nullValue()));
@@ -69,9 +61,6 @@ public class OrderShipmentUseCaseTest {
         initialOrder.setId(1);
         initialOrder.setStatus(OrderStatus.SHIPPED);
         orderRepository.addOrder(initialOrder);
-
-        OrderShipmentRequest request = new OrderShipmentRequest();
-        request.setOrderId(1);
 
         useCase.run(request);
 
