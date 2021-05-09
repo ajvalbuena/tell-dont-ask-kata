@@ -17,13 +17,21 @@ public class Order {
     private OrderStatus status;
     private int id;
 
+    public Order(OrderStatus status, int id) {
+        this.status = status;
+        this.id = id;
+    }
 
-    public void newBlankOrder() {
-        setStatus(OrderStatus.CREATED);
-        setItems(new ArrayList<>());
-        setCurrency("EUR");
-        setTotal(new BigDecimal("0.00"));
-        setTax(new BigDecimal("0.00"));
+    public Order(BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax, OrderStatus status) {
+        this.total = total;
+        this.currency = currency;
+        this.items = items;
+        this.tax = tax;
+        this.status = status;
+    }
+
+    public static Order newBlankOrder() {
+        return new Order(new BigDecimal("0.00"),"EUR", new ArrayList<>(), new BigDecimal("0.00"),OrderStatus.CREATED);
     }
 
     public void ship(ShipmentService shipmentService) {
@@ -67,32 +75,16 @@ public class Order {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
     public String getCurrency() {
         return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public List<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
-    }
-
     public BigDecimal getTax() {
         return tax;
-    }
-
-    public void setTax(BigDecimal tax) {
-        this.tax = tax;
     }
 
     public OrderStatus getStatus() {
