@@ -12,10 +12,11 @@ import static org.junit.Assert.assertThat;
 public class OrderApprovalUseCaseTest {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
     private final OrderApprovalUseCase useCase = new OrderApprovalUseCase(orderRepository);
+    private Order initialOrder(OrderStatus status) {return new Order(status, 1);}
 
     @Test
     public void approvedExistingOrder() throws Exception {
-        Order initialOrder = new Order(OrderStatus.CREATED, 1);
+        Order initialOrder = initialOrder(OrderStatus.CREATED);
         orderRepository.addOrder(initialOrder);
         OrderApprovalRequest request = new OrderApprovalRequest(1, true);
 
@@ -25,9 +26,10 @@ public class OrderApprovalUseCaseTest {
         assertThat(savedOrder.getStatus(), is(OrderStatus.APPROVED));
     }
 
+
     @Test
     public void rejectedExistingOrder() throws Exception {
-        Order initialOrder = new Order(OrderStatus.CREATED,1);
+        Order initialOrder = initialOrder(OrderStatus.CREATED);
         orderRepository.addOrder(initialOrder);
         OrderApprovalRequest request = new OrderApprovalRequest(1, false);
 
@@ -39,7 +41,7 @@ public class OrderApprovalUseCaseTest {
 
     @Test(expected = RejectedOrderCannotBeApprovedException.class)
     public void cannotApproveRejectedOrder() throws Exception {
-        Order initialOrder = new Order(OrderStatus.REJECTED,1);
+        Order initialOrder = initialOrder(OrderStatus.REJECTED);
         orderRepository.addOrder(initialOrder);
         OrderApprovalRequest request = new OrderApprovalRequest(1, true);
 
@@ -50,7 +52,7 @@ public class OrderApprovalUseCaseTest {
 
     @Test(expected = ApprovedOrderCannotBeRejectedException.class)
     public void cannotRejectApprovedOrder() throws Exception {
-        Order initialOrder = new Order(OrderStatus.APPROVED,1);
+        Order initialOrder = initialOrder(OrderStatus.APPROVED);
         orderRepository.addOrder(initialOrder);
         OrderApprovalRequest request = new OrderApprovalRequest(1, false);
 
@@ -74,7 +76,6 @@ public class OrderApprovalUseCaseTest {
     public void shippedOrdersCannotBeRejected() throws Exception {
         Order initialOrder = new Order(OrderStatus.SHIPPED,1);
         orderRepository.addOrder(initialOrder);
-
         OrderApprovalRequest request = new OrderApprovalRequest(1, false);
 
         useCase.run(request);
