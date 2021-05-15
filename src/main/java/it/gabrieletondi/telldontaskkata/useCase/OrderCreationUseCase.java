@@ -36,7 +36,7 @@ public class OrderCreationUseCase {
                 order.getItems().add(orderItem);
             }
         }
-        order.updateOrderWithOrderItems();
-        orderRepository.save(order);
+        Order orderUpdated = order.updateOrderWithOrderItems();
+        orderRepository.save(orderUpdated);
     }
 }

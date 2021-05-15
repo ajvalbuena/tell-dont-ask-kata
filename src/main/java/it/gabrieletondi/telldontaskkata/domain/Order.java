@@ -34,41 +34,46 @@ public class Order {
         return new Order(new BigDecimal("0.00"),"EUR", new ArrayList<>(), new BigDecimal("0.00"),OrderStatus.CREATED);
     }
 
-    public void ship(ShipmentService shipmentService) {
-        if (isStatus(CREATED) || isStatus(REJECTED)) throw new OrderCannotBeShippedException();
-        if (isStatus(SHIPPED)) throw new OrderCannotBeShippedTwiceException();
-
-        shipmentService.ship(this);
+    public Order ship() {
         status = OrderStatus.SHIPPED;
+        return this;
     }
 
-    public void approve(OrderApprovalRequest request) {
+    public boolean isOrderReadyToBeShipped (){
+        if (isStatus(CREATED) || isStatus(REJECTED)) throw new OrderCannotBeShippedException();
+        if (isStatus(SHIPPED)) throw new OrderCannotBeShippedTwiceException();
+        return true;
+    }
+
+    public Order approve(OrderApprovalRequest request) {
         if (isStatus(SHIPPED)) throw new ShippedOrdersCannotBeChangedException();
         if (request.isApproved() && isStatus(REJECTED)) throw new RejectedOrderCannotBeApprovedException();
         if (!request.isApproved() && isStatus(APPROVED)) throw new ApprovedOrderCannotBeRejectedException();
 
         status = request.isApproved() ? OrderStatus.APPROVED : OrderStatus.REJECTED;
+        return this;
     }
 
-    public boolean isStatus(OrderStatus status) {
+    private boolean isStatus(OrderStatus status) {
         return this.getStatus().equals(status);
     }
 
-    public void updateOrderWithOrderItems(){
-        updateTax();
-        updateTotal();
+    public Order updateOrderWithOrderItems(){
+        this.tax = updateTax(this);
+        this.total = updateTotal(this);
+        return this;
     }
 
-    private void updateTotal() {
-        total = items.stream()
+    private BigDecimal updateTotal(Order order) {
+        return order.getItems().stream()
                 .map(item -> item.getTaxedAmount())
-                .reduce(total, (a, b) -> a.add(b));
+                .reduce(BigDecimal.valueOf(0), (a, b) -> a.add(b));
     }
 
-    private void updateTax() {
-        tax = items.stream()
+    private BigDecimal updateTax(Order order) {
+        return order.getItems().stream()
                 .map(item -> item.getTax())
-                .reduce(tax, (a, b) -> a.add(b));
+                .reduce(BigDecimal.valueOf(0), (a, b) -> a.add(b));
     }
 
     public BigDecimal getTotal() {

@@ -12,7 +12,7 @@ public class OrderApprovalUseCase {
 
     public void run(OrderApprovalRequest request) {
         final Order order = orderRepository.getById(request.getOrderId());
-        order.approve(request);
-        orderRepository.save(order);
+        Order orderApproved = order.approve(request);
+        orderRepository.save(orderApproved);
     }
 }
