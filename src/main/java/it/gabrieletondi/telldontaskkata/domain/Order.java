@@ -1,6 +1,5 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
-import it.gabrieletondi.telldontaskkata.service.ShipmentService;
 import it.gabrieletondi.telldontaskkata.useCase.*;
 
 import java.math.BigDecimal;
@@ -9,7 +8,7 @@ import java.util.List;
 
 import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 
-public class Order {
+public abstract class Order {
     private BigDecimal total;
     private String currency;
     private List<OrderItem> items;
@@ -31,7 +30,7 @@ public class Order {
     }
 
     public static Order newBlankOrder() {
-        return new Order(new BigDecimal("0.00"),"EUR", new ArrayList<>(), new BigDecimal("0.00"),OrderStatus.CREATED);
+        return new CreatedOrder();
     }
 
     public Order ship() {
@@ -54,15 +53,16 @@ public class Order {
         return this;
     }
 
-    private boolean isStatus(OrderStatus status) {
-        return this.getStatus().equals(status);
-    }
-
     public Order updateOrderWithOrderItems(){
         this.tax = updateTax(this);
         this.total = updateTotal(this);
         return this;
     }
+
+    private boolean isStatus(OrderStatus status) {
+        return this.getStatus().equals(status);
+    }
+
 
     private BigDecimal updateTotal(Order order) {
         return order.getItems().stream()

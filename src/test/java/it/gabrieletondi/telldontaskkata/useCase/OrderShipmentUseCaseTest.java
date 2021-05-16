@@ -1,7 +1,6 @@
 package it.gabrieletondi.telldontaskkata.useCase;
 
-import it.gabrieletondi.telldontaskkata.domain.Order;
-import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
+import it.gabrieletondi.telldontaskkata.domain.*;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import it.gabrieletondi.telldontaskkata.doubles.TestShipmentService;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class OrderShipmentUseCaseTest {
 
     @Test
     public void shipApprovedOrder() throws Exception {
-        Order initialOrder = new Order(OrderStatus.APPROVED,1);
+        Order initialOrder = new ApprovedOrder(1);
         orderRepository.addOrder(initialOrder);
 
         useCase.run(request);
@@ -29,7 +28,7 @@ public class OrderShipmentUseCaseTest {
 
     @Test(expected = OrderCannotBeShippedException.class)
     public void createdOrdersCannotBeShipped() throws Exception {
-        Order initialOrder = new Order(OrderStatus.CREATED,1);
+        Order initialOrder = new CreatedOrder(1);
         orderRepository.addOrder(initialOrder);
 
         useCase.run(request);
@@ -40,7 +39,7 @@ public class OrderShipmentUseCaseTest {
 
     @Test(expected = OrderCannotBeShippedException.class)
     public void rejectedOrdersCannotBeShipped() throws Exception {
-        Order initialOrder = new Order(OrderStatus.REJECTED,1);
+        Order initialOrder = new RejectedOrder(1);
         orderRepository.addOrder(initialOrder);
 
         useCase.run(request);
@@ -51,7 +50,7 @@ public class OrderShipmentUseCaseTest {
 
     @Test(expected = OrderCannotBeShippedTwiceException.class)
     public void shippedOrdersCannotBeShippedAgain() throws Exception {
-        Order initialOrder = new Order(OrderStatus.SHIPPED,1);
+        Order initialOrder = new ShippedOrder(1);
         orderRepository.addOrder(initialOrder);
 
         useCase.run(request);
