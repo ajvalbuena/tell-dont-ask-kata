@@ -2,6 +2,7 @@ package it.gabrieletondi.telldontaskkata.domain;
 
 import it.gabrieletondi.telldontaskkata.useCase.ApprovedOrderCannotBeRejectedException;
 import it.gabrieletondi.telldontaskkata.useCase.OrderApprovalRequest;
+import it.gabrieletondi.telldontaskkata.useCase.OrderCannotBeShippedException;
 
 import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.APPROVED;
 
@@ -14,5 +15,10 @@ public class ApprovedOrder extends Order{
     public Order approve(OrderApprovalRequest request) {
         if (!request.isApproved()) throw new ApprovedOrderCannotBeRejectedException();
         return this;
+    }
+
+    @Override
+    public boolean isOrderReadyToBeShipped() {
+       return true;
     }
 }

@@ -38,11 +38,7 @@ public abstract class Order {
         return this;
     }
 
-    public boolean isOrderReadyToBeShipped (){
-        if (isStatus(CREATED) || isStatus(REJECTED)) throw new OrderCannotBeShippedException();
-        if (isStatus(SHIPPED)) throw new OrderCannotBeShippedTwiceException();
-        return true;
-    }
+    public abstract boolean isOrderReadyToBeShipped ();
 
     public abstract Order approve(OrderApprovalRequest request);
 
