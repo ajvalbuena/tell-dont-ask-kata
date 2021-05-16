@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 public class OrderApprovalUseCaseTest {
@@ -21,7 +22,7 @@ public class OrderApprovalUseCaseTest {
         useCase.run(request);
         final Order savedOrder = orderRepository.getSavedOrder();
 
-        assertThat(savedOrder.getStatus(), is(OrderStatus.APPROVED));
+        assertThat(savedOrder, instanceOf(ApprovedOrder.class));
     }
 
 
@@ -34,7 +35,7 @@ public class OrderApprovalUseCaseTest {
         useCase.run(request);
         final Order savedOrder = orderRepository.getSavedOrder();
 
-        assertThat(savedOrder.getStatus(), is(OrderStatus.REJECTED));
+        assertThat(savedOrder, instanceOf(RejectedOrder.class));
     }
 
     @Test(expected = RejectedOrderCannotBeApprovedException.class)

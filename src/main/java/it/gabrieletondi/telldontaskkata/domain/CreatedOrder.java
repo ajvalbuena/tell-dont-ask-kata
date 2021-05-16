@@ -9,17 +9,16 @@ import java.util.ArrayList;
 public class CreatedOrder extends Order {
 
     public CreatedOrder() {
-        super(new BigDecimal("0.00"), "EUR", new ArrayList<>(), new BigDecimal("0.00"),OrderStatus.CREATED);
+        super(new BigDecimal("0.00"), "EUR", new ArrayList<>(), new BigDecimal("0.00"));
     }
 
     public CreatedOrder(int id){
-        super(OrderStatus.CREATED, id);
+        super(id);
     }
 
     @Override
     public Order approve(OrderApprovalRequest request) {
-        this.status = request.isApproved() ? OrderStatus.APPROVED : OrderStatus.REJECTED;
-        return this;
+        return request.isApproved() ? this.approve2(): this.reject();
     }
 
     @Override

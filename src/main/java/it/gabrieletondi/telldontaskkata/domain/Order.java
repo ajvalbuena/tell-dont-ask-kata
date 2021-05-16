@@ -1,32 +1,34 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
-import it.gabrieletondi.telldontaskkata.useCase.*;
+import it.gabrieletondi.telldontaskkata.useCase.OrderApprovalRequest;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 
 public abstract class Order {
     private BigDecimal total;
     private String currency;
     private List<OrderItem> items;
     private BigDecimal tax;
-    protected OrderStatus status;
     private int id;
 
-    public Order(OrderStatus status, int id) {
-        this.status = status;
+    public Order(int id) {
         this.id = id;
     }
 
-    public Order(BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax, OrderStatus status) {
+    public Order(BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
         this.total = total;
         this.currency = currency;
         this.items = items;
         this.tax = tax;
-        this.status = status;
+    }
+
+    public Order(int id,BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
+        this.id = id;
+        this.total = total;
+        this.currency = currency;
+        this.items = items;
+        this.tax = tax;
     }
 
     public static Order newBlankOrder() {
@@ -34,8 +36,15 @@ public abstract class Order {
     }
 
     public Order ship() {
-        status = OrderStatus.SHIPPED;
-        return this;
+        return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax);
+    }
+
+    public Order approve2() {
+        return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax);
+    }
+
+    public Order reject() {
+        return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax);
     }
 
     public abstract boolean isOrderReadyToBeShipped ();
@@ -47,11 +56,6 @@ public abstract class Order {
         this.total = updateTotal(this);
         return this;
     }
-
-    private boolean isStatus(OrderStatus status) {
-        return this.getStatus().equals(status);
-    }
-
 
     private BigDecimal updateTotal(Order order) {
         return order.getItems().stream()
@@ -79,10 +83,6 @@ public abstract class Order {
 
     public BigDecimal getTax() {
         return tax;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
     }
 
     public int getId() {

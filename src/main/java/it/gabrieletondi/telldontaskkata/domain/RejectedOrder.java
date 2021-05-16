@@ -4,9 +4,16 @@ import it.gabrieletondi.telldontaskkata.useCase.OrderApprovalRequest;
 import it.gabrieletondi.telldontaskkata.useCase.OrderCannotBeShippedException;
 import it.gabrieletondi.telldontaskkata.useCase.RejectedOrderCannotBeApprovedException;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public class RejectedOrder extends Order {
     public RejectedOrder(int id) {
-        super(OrderStatus.REJECTED, id);
+        super(id);
+    }
+
+    public RejectedOrder(int id, BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
+        super(id,total, currency,items, tax);
     }
 
     @Override
