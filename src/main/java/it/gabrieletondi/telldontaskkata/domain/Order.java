@@ -13,7 +13,7 @@ public abstract class Order {
     private String currency;
     private List<OrderItem> items;
     private BigDecimal tax;
-    private OrderStatus status;
+    protected OrderStatus status;
     private int id;
 
     public Order(OrderStatus status, int id) {
@@ -44,14 +44,7 @@ public abstract class Order {
         return true;
     }
 
-    public Order approve(OrderApprovalRequest request) {
-        if (isStatus(SHIPPED)) throw new ShippedOrdersCannotBeChangedException();
-        if (request.isApproved() && isStatus(REJECTED)) throw new RejectedOrderCannotBeApprovedException();
-        if (!request.isApproved() && isStatus(APPROVED)) throw new ApprovedOrderCannotBeRejectedException();
-
-        status = request.isApproved() ? OrderStatus.APPROVED : OrderStatus.REJECTED;
-        return this;
-    }
+    public abstract Order approve(OrderApprovalRequest request);
 
     public Order updateOrderWithOrderItems(){
         this.tax = updateTax(this);

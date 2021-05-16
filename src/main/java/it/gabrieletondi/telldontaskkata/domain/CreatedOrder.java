@@ -1,5 +1,7 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
+import it.gabrieletondi.telldontaskkata.useCase.OrderApprovalRequest;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -13,4 +15,9 @@ public class CreatedOrder extends Order {
         super(OrderStatus.CREATED, id);
     }
 
+    @Override
+    public Order approve(OrderApprovalRequest request) {
+        this.status = request.isApproved() ? OrderStatus.APPROVED : OrderStatus.REJECTED;
+        return this;
+    }
 }
