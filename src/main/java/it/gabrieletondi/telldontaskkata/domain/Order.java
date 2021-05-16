@@ -30,26 +30,19 @@ public abstract class Order {
         this.items = items;
         this.tax = tax;
     }
-
-    public static Order newBlankOrder() {
-        return new CreatedOrder();
-    }
-
-    public Order ship() {
-        return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax);
-    }
-
-    public Order approve2() {
-        return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax);
-    }
-
-    public Order reject() {
-        return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax);
-    }
-
     public abstract boolean isOrderReadyToBeShipped ();
 
     public abstract Order approve(OrderApprovalRequest request);
+
+
+    public static Order CreateOrder() { return new CreatedOrder(); }
+
+    public Order shipOrder() { return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+
+    public Order approveOrder() { return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+
+    public Order rejectOrder() { return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+
 
     public Order updateOrderWithOrderItems(){
         this.tax = updateTax(this);
