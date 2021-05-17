@@ -12,17 +12,6 @@ public abstract class Order {
     private BigDecimal tax;
     private int id;
 
-    public Order(int id) {
-        this.id = id;
-    }
-
-    public Order(BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
-        this.total = total;
-        this.currency = currency;
-        this.items = items;
-        this.tax = tax;
-    }
-
     public Order(int id,BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
         this.id = id;
         this.total = total;
@@ -35,13 +24,11 @@ public abstract class Order {
     public abstract Order approve(OrderApprovalRequest request);
 
 
-    public static Order CreateOrder() { return new CreatedOrder(); }
-
     public Order shipOrder() { return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax); }
 
-    public Order approveOrder() { return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+    protected Order approveOrder() { return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax); }
 
-    public Order rejectOrder() { return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+    protected Order rejectOrder() { return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax); }
 
 
     public Order updateOrderWithOrderItems(){

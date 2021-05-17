@@ -10,9 +10,6 @@ import java.util.List;
 import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.APPROVED;
 
 public class ApprovedOrder extends Order{
-    public ApprovedOrder(int id) {
-        super(id);
-    }
 
     public ApprovedOrder(int id, BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
         super(id,total, currency,items, tax);

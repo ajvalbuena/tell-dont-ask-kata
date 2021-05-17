@@ -8,12 +8,8 @@ import java.util.ArrayList;
 
 public class CreatedOrder extends Order {
 
-    public CreatedOrder() {
-        super(new BigDecimal("0.00"), "EUR", new ArrayList<>(), new BigDecimal("0.00"));
-    }
-
-    public CreatedOrder(int id){
-        super(id);
+    public CreatedOrder(int id, BigDecimal total, String currency, ArrayList<OrderItem> items, BigDecimal tax) {
+        super(id, total, currency, items, tax);
     }
 
     @Override

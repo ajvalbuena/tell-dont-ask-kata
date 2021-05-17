@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class RejectedOrder extends Order {
-    public RejectedOrder(int id) {
-        super(id);
-    }
 
     public RejectedOrder(int id, BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
         super(id,total, currency,items, tax);
