@@ -18,6 +18,8 @@ public class OrderShipmentUseCase {
         if (order.isOrderReadyToBeShipped()) {
             shipmentService.ship(order);
             orderRepository.save(order.shipOrder());
+        }else{
+            order.cannotBeShipped();
         }
     }
 

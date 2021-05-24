@@ -22,6 +22,4 @@ public class ApprovedOrder extends Order{
     public boolean isOrderReadyToBeShipped() {
        return true;
     }
-
-
 }

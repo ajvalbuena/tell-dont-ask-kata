@@ -20,6 +20,11 @@ public class ShippedOrder extends Order{
 
     @Override
     public boolean isOrderReadyToBeShipped() {
+       return false;
+    }
+
+    @Override
+    public void cannotBeShipped() {
         throw new OrderCannotBeShippedTwiceException();
     }
 }

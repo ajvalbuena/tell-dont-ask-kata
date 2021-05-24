@@ -12,26 +12,36 @@ public abstract class Order {
     private BigDecimal tax;
     private int id;
 
-    public Order(int id,BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
+    public Order(int id, BigDecimal total, String currency, List<OrderItem> items, BigDecimal tax) {
         this.id = id;
         this.total = total;
         this.currency = currency;
         this.items = items;
         this.tax = tax;
     }
-    public abstract boolean isOrderReadyToBeShipped ();
+
+    public abstract boolean isOrderReadyToBeShipped();
 
     public abstract Order approve(OrderApprovalRequest request);
 
 
-    public Order shipOrder() { return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+    public Order shipOrder() {
+        return new ShippedOrder(this.id, this.total, this.currency, this.items, this.tax);
+    }
 
-    protected Order approveOrder() { return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+    protected Order approveOrder() {
+        return new ApprovedOrder(this.id, this.total, this.currency, this.items, this.tax);
+    }
 
-    protected Order rejectOrder() { return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax); }
+    protected Order rejectOrder() {
+        return new RejectedOrder(this.id, this.total, this.currency, this.items, this.tax);
+    }
 
+    public void cannotBeShipped() {
+        return;
+    }
 
-    public Order updateOrderWithOrderItems(){
+    public Order updateOrderWithOrderItems() {
         this.tax = updateTax(this);
         this.total = updateTotal(this);
         return this;
@@ -68,5 +78,6 @@ public abstract class Order {
     public int getId() {
         return id;
     }
+
 
 }
