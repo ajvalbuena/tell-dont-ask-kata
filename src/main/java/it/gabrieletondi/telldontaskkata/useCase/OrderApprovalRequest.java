@@ -1,19 +1,21 @@
 package it.gabrieletondi.telldontaskkata.useCase;
 
+import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
+
 public class OrderApprovalRequest {
     private final int orderId;
-    private final boolean approved;
+    private final OrderStatus nextStatus;
 
-    public OrderApprovalRequest(int orderId, boolean approved) {
+    public OrderApprovalRequest(int orderId, OrderStatus nextStatus) {
         this.orderId = orderId;
-        this.approved = approved;
+        this.nextStatus = nextStatus;
     }
 
     public int getOrderId() {
         return orderId;
     }
 
-    public boolean isApproved() {
-        return approved;
+    public OrderStatus getNextStatus() {
+        return nextStatus;
     }
 }

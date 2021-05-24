@@ -15,7 +15,7 @@ public class RejectedOrder extends Order {
 
     @Override
     public Order approve(OrderApprovalRequest request) {
-        if (request.isApproved()) throw new RejectedOrderCannotBeApprovedException();
+        if (OrderStatus.APPROVED.equals(request.getNextStatus())) throw new RejectedOrderCannotBeApprovedException();
         return this;
     }
 

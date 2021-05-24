@@ -14,7 +14,7 @@ public class CreatedOrder extends Order {
 
     @Override
     public Order approve(OrderApprovalRequest request) {
-        return request.isApproved() ? this.approveOrder(): this.rejectOrder();
+        return OrderStatus.APPROVED.equals(request.getNextStatus()) ? this.approveOrder(): this.rejectOrder();
     }
 
     @Override

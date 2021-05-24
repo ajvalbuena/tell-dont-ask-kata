@@ -2,12 +2,9 @@ package it.gabrieletondi.telldontaskkata.domain;
 
 import it.gabrieletondi.telldontaskkata.useCase.ApprovedOrderCannotBeRejectedException;
 import it.gabrieletondi.telldontaskkata.useCase.OrderApprovalRequest;
-import it.gabrieletondi.telldontaskkata.useCase.OrderCannotBeShippedException;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.APPROVED;
 
 public class ApprovedOrder extends Order{
 
@@ -17,7 +14,7 @@ public class ApprovedOrder extends Order{
 
     @Override
     public Order approve(OrderApprovalRequest request) {
-        if (!request.isApproved()) throw new ApprovedOrderCannotBeRejectedException();
+        if (OrderStatus.REJECTED.equals(request.getNextStatus())) throw new ApprovedOrderCannotBeRejectedException();
         return this;
     }
 
